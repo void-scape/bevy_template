@@ -77,7 +77,7 @@ jobs:
           hdiutil create -fs HFS+ -volname "${{ env.GAME_OSX_APP_NAME }}" -srcfolder build/macos/src ${{ env.GAME_EXECUTABLE_NAME }}.dmg
           mkdir -p ./allbuilds/
           cp "${{ env.GAME_OSX_APP_NAME }}" ./allbuilds/
-      - nae: Upload release
+      - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
