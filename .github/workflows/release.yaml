@@ -125,7 +125,7 @@ jobs:
           tag: ${{ env.VERSION }}
           overwrite: true
 
-  release-windows:
+  build-windows:
     runs-on: windows-latest
     permissions:
         contents: write
