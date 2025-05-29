@@ -58,6 +58,8 @@ jobs:
         with:
           toolchain: stable
           targets: x86_64-apple-darwin
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Build release for x86 Apple
         run: |
           SDKROOT=$(xcrun -sdk macosx --show-sdk-path) cargo build --profile dist --target=x86_64-apple-darwin
@@ -97,6 +99,8 @@ jobs:
           toolchain: stable
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install pkg-config libx11-dev libasound2-dev libudev-dev
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Build release
         run: |
           cargo build --profile dist
@@ -135,6 +139,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           global-json-file: build/windows/installer/global.json
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Build release
         run: |
           cargo build --profile dist
@@ -194,6 +200,8 @@ jobs:
       - name: Add wasm target
         run: |
           rustup target add wasm32-unknown-unknown
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Build Release
         run: |
           trunk build --release
