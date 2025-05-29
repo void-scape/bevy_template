@@ -72,3 +72,12 @@ jobs:
         run: cargo clippy --workspace --all-targets --all-features -- -Dwarnings
       - name: Check format
         run: cargo fmt --all -- --check
+
+  spelling:
+      name: Spell Check
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout Actions Repository
+        uses: actions/checkout@v4
+      - name: Spell Check Repo
+        uses: crate-ci/typos@v1.32.0

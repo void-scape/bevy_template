@@ -1,19 +1,29 @@
 // disable console on windows for release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use bevy::DefaultPlugins;
+use bevy::app::App;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use bevy::winit::WinitWindows;
-use bevy::DefaultPlugins;
-use bevy_game::GamePlugin; // ToDo: Replace bevy_game with your new crate name.
 use std::io::Cursor;
 use winit::window::Icon;
+
+use crate::actions::ActionsPlugin;
+use crate::loading::LoadingPlugin;
+use crate::menu::MenuPlugin;
+use crate::player::PlayerPlugin;
+
+mod actions;
+mod loading;
+mod menu;
+mod player;
 
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::linear_rgb(0.4, 0.4, 0.4)))
-        .add_plugins(
+        .add_plugins((
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
@@ -31,8 +41,8 @@ fn main() {
                     meta_check: AssetMetaCheck::Never,
                     ..default()
                 }),
-        )
-        .add_plugins(GamePlugin)
+            GamePlugin,
+        ))
         .add_systems(Startup, set_window_icon)
         .run();
 }
@@ -58,4 +68,31 @@ fn set_window_icon(
     };
 
     Ok(())
+}
+
+// This example game uses States to separate logic
+// See https://bevy-cheatbook.github.io/programming/states.html
+// Or https://github.com/bevyengine/bevy/blob/main/examples/ecs/state.rs
+#[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
+enum GameState {
+    // During the loading State the LoadingPlugin will load our assets
+    #[default]
+    Loading,
+    // During this State the actual game logic is executed
+    Playing,
+    // Here the menu is drawn and waiting for player interaction
+    Menu,
+}
+
+pub struct GamePlugin;
+
+impl Plugin for GamePlugin {
+    fn build(&self, app: &mut App) {
+        app.init_state::<GameState>().add_plugins((
+            LoadingPlugin,
+            MenuPlugin,
+            ActionsPlugin,
+            PlayerPlugin,
+        ));
+    }
 }
