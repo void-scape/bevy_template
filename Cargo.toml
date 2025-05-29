@@ -83,7 +83,6 @@ log = { version = "0.4", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
-
 avian2d = { git = "https://github.com/Jondolf/avian.git", default-features = false, features = [
     "2d",
     "f32",
@@ -100,6 +99,11 @@ bevy_sequence = { path = "bevy_sequence" }
 
 [patch."https://github.com/void-scape/bevy_pretty_text.git"]
 bevy_pretty_text = { path = "bevy_pretty_text" }
+
+# [target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.3.2", default-features = false, features = [
+    "wasm_js",
+] }
 
 [build-dependencies]
 embed-resource = "1"
