@@ -1,21 +1,16 @@
-cargo-features = ["codegen-backend"]
-
 [package]
 name = "bevy_template"
 edition = "2024"
 
 [profile.dev]
-codegen-backend = "cranelift"
 opt-level = 1
 
 [profile.dev.package."*"]
-codegen-backend = "llvm"
 opt-level = 3
 
 # This is used by trunk as it doesn't support custom profiles: https://github.com/trunk-rs/trunk/issues/605
 # xbuild also uses this profile for building android AABs because I couldn't find a configuration for it
 [profile.release]
-codegen-backend = "llvm"
 opt-level = "s"
 lto = true
 codegen-units = 1
@@ -23,7 +18,6 @@ strip = true
 
 # Profile for distribution
 [profile.dist]
-codegen-backend = "llvm"
 inherits = "release"
 opt-level = 3
 lto = true
