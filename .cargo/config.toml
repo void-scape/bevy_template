@@ -1,2 +1,0 @@
-[profile.nightly]
-rustflags = ["-Z", "threads=8"]
