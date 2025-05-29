@@ -1,38 +1,48 @@
-// disable console on windows for release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use avian2d::prelude::{Gravity, PhysicsLayer};
 use bevy::DefaultPlugins;
-use bevy::app::App;
+use bevy::app::{App, FixedMainScheduleOrder};
 use bevy::asset::AssetMetaCheck;
+use bevy::ecs::schedule::ScheduleLabel;
 use bevy::prelude::*;
-use bevy::window::PrimaryWindow;
+use bevy::window::{PrimaryWindow, WindowResolution};
 use bevy::winit::WinitWindows;
+use bevy_optix::pixel_perfect::CanvasDimensions;
 use std::io::Cursor;
 use winit::window::Icon;
 
-use crate::actions::ActionsPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
 
-mod actions;
 mod loading;
 mod menu;
 mod player;
 
+pub const WIDTH: f32 = 640.;
+pub const HEIGHT: f32 = 360.;
+pub const RESOLUTION_SCALE: f32 = 2.;
+
 fn main() {
-    App::new()
-        .insert_resource(ClearColor(Color::linear_rgb(0.4, 0.4, 0.4)))
+    let mut app = App::new();
+
+    #[cfg(debug_assertions)]
+    app.add_systems(Update, close_on_escape);
+
+    app.insert_resource(ClearColor(Color::linear_rgb(0.4, 0.4, 0.4)))
         .add_plugins((
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Bevy game".to_string(), // ToDo
-                        // Bind to canvas included in `index.html`
                         canvas: Some("#bevy".to_owned()),
                         fit_canvas_to_parent: true,
-                        // Tells wasm not to override default event handling, like F5 and Ctrl+R
                         prevent_default_event_handling: false,
+                        resolution: WindowResolution::new(
+                            WIDTH * RESOLUTION_SCALE,
+                            HEIGHT * RESOLUTION_SCALE,
+                        ),
                         ..default()
                     }),
                     ..default()
@@ -41,10 +51,49 @@ fn main() {
                     meta_check: AssetMetaCheck::Never,
                     ..default()
                 }),
-            GamePlugin,
+            bevy_tween::DefaultTweenPlugins,
+            bevy_seedling::SeedlingPlugin {
+                ..Default::default()
+            },
+            bevy_enhanced_input::EnhancedInputPlugin,
+            //avian2d::debug_render::PhysicsDebugPlugin::new(Avian),
+            avian2d::PhysicsPlugins::new(Avian).with_length_unit(8.),
+            bevy_optix::pixel_perfect::PixelPerfectPlugin(CanvasDimensions {
+                width: WIDTH as u32,
+                height: HEIGHT as u32,
+                pixel_scale: RESOLUTION_SCALE,
+            }),
+            bevy_optix::debug::DebugPlugin,
+            bevy_pretty_text::PrettyTextPlugin,
         ))
-        .add_systems(Startup, set_window_icon)
-        .run();
+        .add_plugins((LoadingPlugin, MenuPlugin, PlayerPlugin))
+        .init_state::<GameState>()
+        .init_schedule(Avian)
+        .insert_resource(Gravity(Vec2::ZERO))
+        .add_systems(Startup, set_window_icon);
+
+    app.world_mut()
+        .resource_mut::<FixedMainScheduleOrder>()
+        .insert_after(FixedPostUpdate, Avian);
+
+    app.run();
+}
+
+#[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
+enum GameState {
+    #[default]
+    Loading,
+    Menu,
+    Playing,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, ScheduleLabel)]
+pub struct Avian;
+
+#[derive(Default, Clone, Copy, PartialEq, Eq, PhysicsLayer)]
+pub enum Layer {
+    #[default]
+    Default,
 }
 
 // Sets the icon on windows and X11
@@ -70,29 +119,9 @@ fn set_window_icon(
     Ok(())
 }
 
-// This example game uses States to separate logic
-// See https://bevy-cheatbook.github.io/programming/states.html
-// Or https://github.com/bevyengine/bevy/blob/main/examples/ecs/state.rs
-#[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
-enum GameState {
-    // During the loading State the LoadingPlugin will load our assets
-    #[default]
-    Loading,
-    // During this State the actual game logic is executed
-    Playing,
-    // Here the menu is drawn and waiting for player interaction
-    Menu,
-}
-
-pub struct GamePlugin;
-
-impl Plugin for GamePlugin {
-    fn build(&self, app: &mut App) {
-        app.init_state::<GameState>().add_plugins((
-            LoadingPlugin,
-            MenuPlugin,
-            ActionsPlugin,
-            PlayerPlugin,
-        ));
+#[cfg(debug_assertions)]
+fn close_on_escape(input: Res<ButtonInput<KeyCode>>, mut writer: EventWriter<AppExit>) {
+    if input.just_pressed(KeyCode::Escape) {
+        writer.write(AppExit::Success);
     }
 }

@@ -1,11 +1,9 @@
-use crate::loading::TextureAssets;
 use crate::GameState;
+use crate::loading::TextureAssets;
 use bevy::prelude::*;
 
 pub struct MenuPlugin;
 
-/// This plugin is responsible for the game menu (containing only one button...)
-/// The menu is only drawn during the State `GameState::Menu` and is removed when that state is exited
 impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Menu), setup_menu)
@@ -33,7 +31,6 @@ impl Default for ButtonColors {
 struct Menu;
 
 fn setup_menu(mut commands: Commands, textures: Res<TextureAssets>) {
-    info!("menu");
     commands.spawn((Camera2d, Msaa::Off));
     commands
         .spawn((

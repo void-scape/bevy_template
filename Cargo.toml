@@ -68,7 +68,10 @@ bevy = { version = "0.16", default-features = false, features = [
     "webgl2",
     "x11",
 ] }
-bevy_asset_loader = { version = "0.23.0" }
+bevy_optix = { path = "bevy_optix" }
+bevy_pretty_text = { path = "bevy_pretty_text" }
+bevy_sequence = { path = "bevy_sequence" }
+bevy_seedling = { path = "bevy_seedling" }
 rand = { version = "0.8.3" }
 webbrowser = { version = "1", features = ["hardened"] }
 
@@ -80,6 +83,23 @@ log = { version = "0.4", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
+
+avian2d = { git = "https://github.com/Jondolf/avian.git", default-features = false, features = [
+    "2d",
+    "f32",
+    "parry-f32",
+    "default-collider",
+    "debug-plugin",
+] }
+bevy_asset_loader = { version = "0.23.0" }
+bevy_tween = "0.8.0"
+bevy_enhanced_input = "0.11"
+
+[patch."https://github.com/CorvusPrudens/bevy_sequence.git"]
+bevy_sequence = { path = "bevy_sequence" }
+
+[patch."https://github.com/void-scape/bevy_pretty_text.git"]
+bevy_pretty_text = { path = "bevy_pretty_text" }
 
 [build-dependencies]
 embed-resource = "1"
