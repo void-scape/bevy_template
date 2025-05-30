@@ -1,5 +1,5 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <!-- ToDo use your own keys for Name and Manufacturer, as well as a new UUID for UpgradeCode -->
+    <!-- TODO: Rename -->
     <Package
         Name="BevyTemplate"
         Manufacturer="void-scape"
@@ -35,7 +35,8 @@
         <!-- Installs the actual files -->
         <ComponentGroup Id="MainComponent" Directory="INSTALLFOLDER">
             <Component>
-                <File Id="Executable" Source="..\..\..\target\dist\bevy_template.exe" Vital="true" />  <!-- ToDo this should point to your executable -->
+                <!-- TODO: This should point to your executable -->
+                <File Id="Executable" Source="..\..\..\target\dist\bevy_template.exe" Vital="true" />  
             </Component>
         </ComponentGroup>
 

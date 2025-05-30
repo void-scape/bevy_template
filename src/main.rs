@@ -35,7 +35,8 @@ fn main() {
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        title: "Bevy game".to_string(), // ToDo
+                        // TODO: Rename
+                        title: "Bevy game".to_string(),
                         canvas: Some("#bevy".to_owned()),
                         fit_canvas_to_parent: true,
                         prevent_default_event_handling: false,
