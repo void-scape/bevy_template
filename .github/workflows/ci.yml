@@ -21,6 +21,24 @@ jobs:
       - name: Tests
         run: cargo test
 
+  wasm-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+      - name: Install Dependencies
+        run: sudo apt-get update; sudo apt-get install pkg-config libx11-dev libasound2-dev libudev-dev
+      - name: Add wasm target
+        run: rustup target add wasm32-unknown-unknown
+      - name: Submodules
+        run: git submodule update --init --recursive
+      - name: Build Release
+        run: cargo test
+
   lint:
     runs-on: ubuntu-latest
     steps:
