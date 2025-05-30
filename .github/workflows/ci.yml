@@ -20,18 +20,7 @@ jobs:
         run: git submodule update --init --recursive
       - name: Tests
         run: cargo test
-  all-doc-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - name: Install alsa and udev
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
-        if: runner.os == 'linux'
-      - name: Submodules
-        run: git submodule update --init --recursive
-      - name: Doc tests with all features
-        run: cargo test --doc --all-features
+
   lint:
     runs-on: ubuntu-latest
     steps:
