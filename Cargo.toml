@@ -70,10 +70,10 @@ bevy = { version = "0.16", default-features = false, features = [
 ] }
 bevy_optix = { path = "bevy_optix" }
 bevy_pretty_text = { path = "bevy_pretty_text" }
-bevy_sequence = { path = "bevy_sequence" }
-bevy_seedling = { path = "bevy_seedling" }
-rand = { version = "0.8.3" }
+# bevy_sequence = { path = "bevy_sequence" }
+# bevy_seedling = { path = "bevy_seedling" }
 webbrowser = { version = "1", features = ["hardened"] }
+rand = "0.8"
 
 # keep the following in sync with Bevy's dependencies
 winit = { version = "0.30", default-features = false }
@@ -94,8 +94,8 @@ bevy_asset_loader = { version = "0.23.0" }
 bevy_tween = "0.8.0"
 bevy_enhanced_input = "0.11"
 
-[patch."https://github.com/CorvusPrudens/bevy_sequence.git"]
-bevy_sequence = { path = "bevy_sequence" }
+# [patch."https://github.com/CorvusPrudens/bevy_sequence.git"]
+# bevy_sequence = { path = "bevy_sequence" }
 
 [patch."https://github.com/void-scape/bevy_pretty_text.git"]
 bevy_pretty_text = { path = "bevy_pretty_text" }

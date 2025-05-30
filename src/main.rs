@@ -52,9 +52,9 @@ fn main() {
                     ..default()
                 }),
             bevy_tween::DefaultTweenPlugins,
-            bevy_seedling::SeedlingPlugin {
-                ..Default::default()
-            },
+            //bevy_seedling::SeedlingPlugin {
+            //    ..Default::default()
+            //},
             bevy_enhanced_input::EnhancedInputPlugin,
             //avian2d::debug_render::PhysicsDebugPlugin::new(Avian),
             avian2d::PhysicsPlugins::new(Avian).with_length_unit(8.),
