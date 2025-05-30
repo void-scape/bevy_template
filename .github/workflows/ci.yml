@@ -16,6 +16,8 @@ jobs:
       - name: Install alsa and udev
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
         if: runner.os == 'linux'
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Tests
         run: cargo test
   all-doc-tests:
@@ -26,6 +28,8 @@ jobs:
       - name: Install alsa and udev
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
         if: runner.os == 'linux'
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Doc tests with all features
         run: cargo test --doc --all-features
   lint:
@@ -38,6 +42,8 @@ jobs:
       - name: Install alsa and udev
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev
         if: runner.os == 'linux'
+      - name: Submodules
+        run: git submodule update --init --recursive
       - name: Clippy
         run: |
           rustup component add clippy 
