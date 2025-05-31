@@ -1,6 +1,3 @@
-[submodule "bevy_seedling"]
-	path = bevy_seedling
-	url = https://github.com/corvusprudens/bevy_seedling
 [submodule "bevy_sequence"]
 	path = bevy_sequence
 	url = https://github.com/corvusprudens/bevy_sequence
@@ -10,3 +7,6 @@
 [submodule "bevy_pretty_text"]
 	path = bevy_pretty_text
 	url = https://github.com/void-scape/bevy_pretty_text.git
+[submodule "bevy_seedling"]
+	path = bevy_seedling
+	url = https://github.com/corvusprudens/bevy_seedling

@@ -71,7 +71,7 @@ bevy = { version = "0.16", default-features = false, features = [
 bevy_optix = { path = "bevy_optix" }
 bevy_pretty_text = { path = "bevy_pretty_text" }
 # bevy_sequence = { path = "bevy_sequence" }
-# bevy_seedling = { path = "bevy_seedling" }
+bevy_seedling = { path = "bevy_seedling" }
 webbrowser = { version = "1", features = ["hardened"] }
 rand = "0.8"
 
@@ -93,17 +93,6 @@ avian2d = { git = "https://github.com/Jondolf/avian.git", default-features = fal
 bevy_asset_loader = { version = "0.23.0" }
 bevy_tween = "0.8.0"
 bevy_enhanced_input = "0.11"
-
-# [patch."https://github.com/CorvusPrudens/bevy_sequence.git"]
-# bevy_sequence = { path = "bevy_sequence" }
-
-[patch."https://github.com/void-scape/bevy_pretty_text.git"]
-bevy_pretty_text = { path = "bevy_pretty_text" }
-
-# [target.'cfg(target_arch = "wasm32")'.dependencies]
-getrandom = { version = "0.3.2", default-features = false, features = [
-    "wasm_js",
-] }
 
 [build-dependencies]
 embed-resource = "1"
